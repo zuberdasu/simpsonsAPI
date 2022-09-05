@@ -8,8 +8,9 @@ import Delete from "./Delete";
 class Character extends Component {
   render() {
     const { character, quote, image, characterDirection, id, liked } =
-      this.props.character;
+      this.props.character; //deconstruct object
 
+    //conditonal rendering so that character faces there quote
     if (characterDirection === "Left") {
       return (
         <div className={"character " + (liked ? "liked" : "not_liked")}>

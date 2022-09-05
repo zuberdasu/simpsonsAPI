@@ -7,7 +7,7 @@ import "./App.css";
 class App extends Component {
   constructor() {
     super();
-    this.searchInput = React.createRef();
+    this.searchInput = React.createRef(); //create ref to make input box controlled component
   }
   state = { searchInput: "" };
 
@@ -17,6 +17,7 @@ class App extends Component {
         "https://thesimpsonsquoteapi.glitch.me/quotes?count=50"
       );
 
+      //give each element id to uniquely identify
       apiData.data.forEach((element, index) => {
         element.id = index;
       });
@@ -28,11 +29,14 @@ class App extends Component {
       });
       this.setState({ apiData: Simpsons });
     }
-    console.log(this.searchInput.current);
-    this.searchInput.current.focus();
-    console.log(this.state.apiData);
+
+    //check if ref is present before giving input box focus
+    if (this.state.apiData) {
+      this.searchInput.current.focus();
+    }
   }
 
+  //Callback function to deal with user clicking like button
   onLike = (id) => {
     const index = this.state.apiData.findIndex((item) => {
       return item.id === id;
@@ -50,6 +54,7 @@ class App extends Component {
     this.setState({ apiData });
   };
 
+  //Callback function to deal with user pressing delete button
   onDelete = (id) => {
     const index = this.state.apiData.findIndex((item) => {
       return item.id === id;
@@ -61,10 +66,11 @@ class App extends Component {
     this.setState({ apiData });
   };
 
+  //Function to take user input and record in state
   onInput = (e) => {
-    console.log("onInput", e.target.value);
     this.setState({ searchInput: e.target.value });
   };
+
   render() {
     const { apiData } = this.state;
 
@@ -72,11 +78,21 @@ class App extends Component {
       return <h1>Loading.....</h1>;
     }
 
+    //Count up how many characters hold like state
     let total = 0;
     apiData.forEach((item) => {
       if (item.liked === true) {
         total += 1;
       }
+    });
+
+    // filter out according to search criteria before rendering
+    let filtered = [...apiData];
+
+    filtered = filtered.filter((character) => {
+      return character.character
+        .toLowerCase()
+        .includes(this.state.searchInput.toLowerCase());
     });
 
     return (
@@ -88,7 +104,7 @@ class App extends Component {
           type="text"
         ></input>
         <h1>Total liked: {total}</h1>
-        {this.state.apiData.map((character) => {
+        {filtered.map((character) => {
           return (
             <Character
               character={character}
