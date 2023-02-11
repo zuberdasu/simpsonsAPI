@@ -97,23 +97,30 @@ class App extends Component {
 
     return (
       <>
-        <input
-          ref={this.searchInput}
-          value={this.state.searchInput}
-          onInput={this.onInput}
-          type="text"
-        ></input>
-        <h1>Total liked: {total}</h1>
-        {filtered.map((character) => {
-          return (
-            <Character
-              character={character}
-              onLike={this.onLike}
-              onDelete={this.onDelete}
-              key={character.id}
-            />
-          );
-        })}
+        <h1 className="pageHeading">The Simpsons Quote Generator</h1>
+        <div className="top">
+          <input
+            ref={this.searchInput}
+            value={this.state.searchInput}
+            onInput={this.onInput}
+            type="text"
+            placeholder="Search for a Simpsons character..."
+          ></input>
+          <h3>Total liked: {total}</h3>
+        </div>
+
+        <div className="characterContainer">
+          {filtered.map((character) => {
+            return (
+              <Character
+                character={character}
+                onLike={this.onLike}
+                onDelete={this.onDelete}
+                key={character.id}
+              />
+            );
+          })}
+        </div>
       </>
     );
   }
